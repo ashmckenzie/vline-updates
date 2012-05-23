@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'bundler/setup'
+Bundler.require(:default, :development)
+
+require_relative '../lib/init'
+require_relative '../lib/utils'
+require_relative '../lib/errbit'
+require_relative '../lib/vline_updates'
+
+include Utils
+
+opts = Trollop::options do
+  opt :verbose, "Verbose mode"
+  opt :debug, "Verbose mode"
+  opt :dry, "Dry mode (don't send notifications)"
+end
+
+$VERBOSE_ON = opts[:verbose] ? true : false
+$DEBUG_ON = opts[:debug] ? true : false
+$DRY_ON = opts[:dry] ? true : false
+
+$logger = Logging.logger(STDOUT)
+$logger.level = :off
+$logger.level = :info if $VERBOSE_ON
+$logger.level = :debug if $DEBUG_ON
+
+debug_log(opts)
+
+Errbit.endeavour(Exception, 0) do |try|
+  VlineUpdates.notify
+end
