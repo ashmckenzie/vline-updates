@@ -34,7 +34,7 @@ module VlineUpdates
           application: $CONFIG.name,
           event: detail.event,
           description: detail.description,
-          priority: eval("#{$CONFIG.nma.priority.to_sym}")    # FIXME
+          priority: detail.priority
         }
       end 
     end
@@ -54,14 +54,37 @@ module VlineUpdates
   class Detail
 
     def self.obtain
-      # File.open('/tmp/vline.html', 'w') do |f|
-      #   x = RestClient.get $CONFIG.vline.page
-      #   f.write(x)
-      # end
+      rss
+    end
+
+    def self.rss
+      # rss = Nokogiri::XML RestClient.get($CONFIG.vline.page)
+      rss = Nokogiri::XML File.read('./tmp/example.rss')
 
       details = []
 
-      html = Nokogiri::HTML File.read('/tmp/vline.html')
+      rss.xpath('//item').each do |update|
+
+        type = update.xpath('title').text
+        detail = update.xpath('description').text.gsub(/<\/?[^>]+>/, '').strip.chomp
+
+        case type.downcase
+            when 'delay'
+              klass = Delay
+            else
+              klass = Misc
+          end
+
+          details << klass.new(detail)
+      end
+
+      details
+    end
+
+    def self.html
+      details = []
+
+      html = Nokogiri::HTML File.read('./tmp/vline.html')
 
       html.css('div.serviceUpdate').each do |update|
         type = update.css('span').text
@@ -71,7 +94,7 @@ module VlineUpdates
           when 'delay'
             klass = Delay
           else
-            klass = Default
+            klass = Misc
         end
 
         details << klass.new(detail)
@@ -81,11 +104,12 @@ module VlineUpdates
     end
 
     class Misc
-      attr_reader :description
+      attr_reader :description, :priority
 
       def initialize str
-        @event = 'Misc'
+        @event = 'Update'
         @description = str
+        @priority = NORMAL
       end
 
       def event
@@ -100,10 +124,12 @@ module VlineUpdates
     class Delay
       class DelayFormatUnknown < Exception; end
 
-      attr_reader :time, :departing, :terminating, :msg
+      attr_reader :time, :departing, :terminating, :msg, :priority
 
       def initialize str
         @event = 'Delay'
+        @priority = HIGH
+
         if result = str.scan(/(\d+:\d+) (.+) - (.+) - (.+)$/)
           time, @departing, @terminating, msg = result[0]
 
