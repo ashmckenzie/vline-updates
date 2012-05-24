@@ -2,8 +2,8 @@ module VlineUpdates
   module Updates
 
     def self.obtain
-      # rss = Nokogiri::XML RestClient.get($CONFIG.vline.page)
-      rss = Nokogiri::XML File.read('./tmp/example.rss')
+      rss = Nokogiri::XML RestClient.get($CONFIG.vline.page)
+      # rss = Nokogiri::XML File.read('./tmp/example.rss')
 
       details = []
 
@@ -15,6 +15,8 @@ module VlineUpdates
         case type.downcase
             when 'delay'
               klass = Delay
+            when 'cancelled'
+              klass = Cancelled
             else
               klass = Generic
           end
