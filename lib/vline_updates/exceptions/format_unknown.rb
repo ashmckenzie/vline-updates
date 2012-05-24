@@ -1,0 +1,1 @@
+class FormatUnknown < Exception; end

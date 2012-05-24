@@ -11,6 +11,10 @@ require_relative '../lib/vline_updates'
 
 include Utils
 
+require 'active_support/dependencies'
+ActiveSupport::Dependencies.autoload_paths << File.expand_path('../../lib', __FILE__)
+ActiveSupport::Dependencies.autoload_paths << File.expand_path('../../lib/vline_updates', __FILE__)
+
 opts = Trollop::options do
   opt :verbose, "Verbose mode"
   opt :debug, "Verbose mode"
