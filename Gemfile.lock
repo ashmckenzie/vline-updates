@@ -49,6 +49,7 @@ GEM
       slop (>= 2.4.4, < 3)
     pry-nav (0.2.1)
       pry (~> 0.9.9)
+    recursive-open-struct (0.2.1)
     rest-client (1.6.7)
       mime-types (>= 1.16)
     slop (2.4.4)
@@ -74,6 +75,7 @@ DEPENDENCIES
   nokogiri
   pry
   pry-nav
+  recursive-open-struct
   rest-client
   toadhopper
   trollop

@@ -1,4 +1,8 @@
-require 'yaml'
+require 'rubygems'
+require 'bundler/setup'
+Bundler.require(:default, :development)
+
+require File.expand_path('../../lib/init', __FILE__)
 
 CONFIG = YAML.load_file('config/config.yml')
 

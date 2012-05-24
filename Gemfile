@@ -7,6 +7,7 @@ gem 'logging'
 gem 'nokogiri'
 gem 'whenever', :require => false
 gem 'toadhopper'
+gem 'recursive-open-struct', :require => 'recursive_open_struct'
 
 group :development do
   gem 'pry'
