@@ -30,7 +30,7 @@ class Errbit
   private
 
   def api_key
-    $BASE_CONFIG['errbit']['api_key']
+    $BASE_CONFIG.errbit.api_key
   end
 
   def enabled?
@@ -42,7 +42,7 @@ class Errbit
   end
 
   def new_opts
-    { :notify_host => $BASE_CONFIG['errbit']['host'] }
+    { :notify_host => $BASE_CONFIG.errbit.host }
   end
 
   def post_opts
