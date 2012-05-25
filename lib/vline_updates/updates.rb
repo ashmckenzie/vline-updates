@@ -3,25 +3,30 @@ module VlineUpdates
 
     def self.obtain
       rss = Nokogiri::XML RestClient.get($CONFIG.vline.page)
-      # rss = Nokogiri::XML File.read('./tmp/example.rss')
 
       details = []
 
-      rss.xpath('//item').each do |update|
+      rss.xpath('//item').each do |item|
 
-        type = update.xpath('title').text
-        detail = update.xpath('description').text.gsub(/<\/?[^>]+>/, '').strip.chomp
+        type = item.xpath('title').text
 
         case type.downcase
-            when 'delay'
-              klass = Delay
-            when 'cancelled'
-              klass = Cancelled
-            else
-              klass = Generic
-          end
+          when 'delay'
+            klass = Delay
+          when 'cancelled'
+            klass = Cancelled
+          else
+            klass = Generic
+        end
 
-          details << klass.new(detail)
+        update = klass.new(item)
+
+        unless VlineUpdates::Updates::Update.exists?(conditions: { guid: update.guid })
+          update.save
+          details << update
+        else
+          $logger.debug "Update alread exists - #{update}"
+        end
       end
 
       details

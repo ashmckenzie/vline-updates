@@ -10,6 +10,8 @@ gem 'toadhopper'
 gem 'recursive-open-struct', :require => 'recursive_open_struct'
 gem 'activesupport'
 gem 'awesome_print'
+gem 'bson_ext'
+gem 'mongoid'
 
 group :development do
   gem 'pry'

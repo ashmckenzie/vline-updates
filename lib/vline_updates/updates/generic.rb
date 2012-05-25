@@ -1,20 +1,10 @@
 module VlineUpdates
   module Updates
-    class Generic
-      attr_reader :description, :priority
+    class Generic < Update
 
-      def initialize str
-        @event = 'Update'
-        @description = str
+      def initialize update
         @priority = NORMAL
-      end
-
-      def event
-        "[#{Time.now.strftime('%d/%m/%Y %H:%M')}]: #{@event}"
-      end
-
-      def to_s
-        "#{event} - #{@description}"
+        super
       end
     end
   end

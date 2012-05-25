@@ -9,8 +9,14 @@ module VlineUpdates
   def self.notify
     jobs = []
 
-    Updates.obtain.collect do |detail|
+    Mongoid.configure do |config|
+      name = "vline_updates"
+      host = "127.0.0.1"
+      config.master = Mongo::Connection.new.db(name)
+      config.persist_in_safe_mode = false
+    end
 
+    Updates.obtain.collect do |detail|
       payload = {
         detail: detail,
         apikey: $CONFIG.nma.api_key,

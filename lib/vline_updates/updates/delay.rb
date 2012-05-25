@@ -1,9 +1,8 @@
 module VlineUpdates
   module Updates
-    class Delay < Structured
- 
-      def initialize str
-        @event = 'Delay'
+    class Delay < Update
+      
+      def initialize update
         @priority = HIGH
         super
       end

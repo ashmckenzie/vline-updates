@@ -1,9 +1,8 @@
 module VlineUpdates
   module Updates
-    class Cancelled < Structured
+    class Cancelled < Update
 
-      def initialize str
-        @event = 'Delay'
+      def initialize update
         @priority = EMERGENCY
         super
       end
