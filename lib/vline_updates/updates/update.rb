@@ -12,7 +12,7 @@ module VlineUpdates
         @update = update
 
         @type = update.xpath('title').text.capitalize
-        @time = DateTime.parse(update.xpath('pubDate').text)
+        @time = Time.zone.parse(update.xpath('pubDate').text)
         @guid = update.xpath('guid').text
 
         super({ :guid => guid })
