@@ -81,7 +81,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport
+  activesupport (~> 3.2.3)
   awesome_print
   bson_ext
   capistrano
