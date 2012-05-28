@@ -21,11 +21,16 @@ module VlineUpdates
 
         update = klass.new(item)
 
-        unless VlineUpdates::Updates::Update.exists?(conditions: { guid: update.guid })
-          update.save
-          details << update
+        unless $DRY_ON
+          unless VlineUpdates::Updates::Update.exists?(conditions: { guid: update.guid })
+            update.save
+            details << update
+          else
+            $logger.debug "Update alread exists - #{update}"
+          end
         else
-          $logger.debug "Update alread exists - #{update}"
+          $logger.debug update
+          $logger.debug "Not looking up as --dry mode actuve"
         end
       end
 
