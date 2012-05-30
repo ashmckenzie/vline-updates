@@ -26,11 +26,11 @@ module VlineUpdates
             update.save
             details << update
           else
-            $logger.debug "Update alread exists - #{update}"
+            $logger.debug "Update already exists - #{update}"
           end
         else
           $logger.debug update
-          $logger.debug "Not looking up as --dry mode actuve"
+          $logger.debug "Not looking up as --dry mode active"
         end
       end
 
